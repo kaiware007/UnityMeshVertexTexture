@@ -6,7 +6,7 @@ Create Mesh's Vertex Texture.
 Writing Mesh vertex position data to Texture2D.  
 Vertex / fragment shader or compute shader can reference vertex coordinates of the mesh.
 
-![IcoSphereMesh](ReadMeData/IcoSphereMesh.png)  
+![IcoSphereMesh](ReadMeData/IcoSphereMesh.PNG)  
 **↓**  
 ![IcoSphereTexture](ReadMeData/IcoSphereTexture.png)
 

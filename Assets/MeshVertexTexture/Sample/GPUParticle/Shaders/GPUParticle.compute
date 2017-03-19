@@ -1,0 +1,33 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+#include "Assets/MeshVertexTexture/Shaders/MeshVertexTexture.cginc"
+#include "GPUParticleData.cginc"
+
+float _DT;
+float _VertexSpeed;
+//int _VertexCount;
+RWStructuredBuffer<ParticleData> _ParticleBuffer;
+
+[numthreads(8,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	uint idx = id.x;
+	_ParticleBuffer[idx].vertexIndex = fmod(_ParticleBuffer[idx].vertexIndex + _DT * _VertexSpeed, _VertexCount);
+	//_ParticleBuffer[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+
+	//float vidx = CheckVertexIndex(_ParticleBuffer[idx].vertexIndex);
+	//float3 pos = GetVertexPosition(vidx);
+
+	// 頂点テクスチャーから頂点座標を取り出す
+	float vidx = CheckVertexIndex(_ParticleBuffer[idx].vertexIndex);
+	float vidx2 = vidx + 1;	// 次の座標
+
+	float3 pos = GetVertexPosition(vidx);
+	float3 pos2 = GetVertexPosition(vidx2);
+
+	//pos = lerp(pos, pos2, frac(vidx));
+
+	//_ParticleBuffer[idx].position = _MeshCenter + (pos - 0.5) * 2.0 * _MeshSize;
+	_ParticleBuffer[idx].position = lerp(pos, pos2, frac(vidx));
+}
